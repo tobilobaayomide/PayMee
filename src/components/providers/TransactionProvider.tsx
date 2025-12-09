@@ -1,7 +1,6 @@
 'use client'
 
 import React, { createContext, useContext, useState, useMemo } from 'react'
-import { mockTransactions } from '@/data/mock'
 import { Transaction } from '@/types'
 
 interface TransactionContextType {
@@ -28,7 +27,7 @@ export const useTransactionContext = () => {
 }
 
 export function TransactionProvider({ children }: { children: React.ReactNode }) {
-  const [transactions] = useState<Transaction[]>(mockTransactions)
+  const [transactions] = useState<Transaction[]>([])
   const [filter, setFilter] = useState<'all' | 'income' | 'expense' | 'transfer'>('all')
   const [sortBy, setSortBy] = useState<'date' | 'amount' | 'type'>('date')
   const [searchTerm, setSearchTerm] = useState('')

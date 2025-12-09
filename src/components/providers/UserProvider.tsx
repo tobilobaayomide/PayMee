@@ -7,9 +7,10 @@ import type { User } from '@supabase/supabase-js'
 type UserContextType = {
   user: User | null
   loading: boolean
+  setUser: (user: User | null) => void
 }
 
-const UserContext = createContext<UserContextType>({ user: null, loading: true })
+const UserContext = createContext<UserContextType>({ user: null, loading: true, setUser: () => {} })
 
 export const useUser = () => {
   const context = useContext(UserContext)
@@ -51,7 +52,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, [supabase.auth])
 
   return (
-    <UserContext.Provider value={{ user, loading }}>
+    <UserContext.Provider value={{ user, loading, setUser }}>
       {children}
     </UserContext.Provider>
   )
