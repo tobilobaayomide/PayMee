@@ -1,15 +1,13 @@
 import { formatCurrency } from '@/lib/utils'
+import { CategorySpending } from '@/lib/supabase/analytics'
 
-const spendingData = [
-  { category: 'Investment', amount: 350000, percentage: 32.8, color: 'bg-purple-500', hex: '#8b5cf6', trend: '+5.2%' },
-  { category: 'Food & Dining', amount: 245000, percentage: 23.0, color: 'bg-blue-500', hex: '#3b82f6', trend: '+2.1%' },
-  { category: 'Utilities', amount: 178000, percentage: 16.7, color: 'bg-emerald-500', hex: '#10b981', trend: '-1.8%' },
-  { category: 'Transportation', amount: 125000, percentage: 11.7, color: 'bg-orange-500', hex: '#f97316', trend: '+8.3%' },
-  { category: 'Entertainment', amount: 89000, percentage: 8.3, color: 'bg-pink-500', hex: '#ec4899', trend: '+15.2%' },
-  { category: 'Others', amount: 67000, percentage: 6.3, color: 'bg-slate-500', hex: '#64748b', trend: '-2.1%' },
-]
+interface SpendingBreakdownProps {
+  data: CategorySpending[]
+  dateRangeLabel?: string
+}
 
-export default function SpendingBreakdown() {
+export default function SpendingBreakdown({ data, dateRangeLabel = 'This period' }: SpendingBreakdownProps) {
+  const spendingData = data.length > 0 ? data : []
   const total = spendingData.reduce((sum, item) => sum + item.amount, 0)
   let currentAngle = 0
   
@@ -19,7 +17,7 @@ export default function SpendingBreakdown() {
       <div className="flex items-center justify-center relative">
         <div className="relative w-36 h-36">
           {/* Outer ring shadow */}
-          <div className="absolute inset-2 rounded-full shadow-lg bg-white"></div>
+          <div className="absolute inset-2 rounded-full shadow-lg bg-white dark:bg-neutral-800"></div>
           
           {/* SVG Pie Chart */}
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -55,28 +53,28 @@ export default function SpendingBreakdown() {
                     d={pathData}
                     fill={item.hex}
                     className="hover:opacity-90 transition-all duration-300 cursor-pointer drop-shadow-sm"
-                    stroke="white"
+                    stroke="currentColor"
                     strokeWidth="0.5"
                   />
                   {/* Hover effect */}
                   <path
                     d={pathData}
                     fill="transparent"
-                    className="hover:stroke-slate-400 hover:stroke-2 transition-all duration-300"
+                    className="hover:stroke-slate-400 dark:hover:stroke-slate-600 hover:stroke-2 transition-all duration-300"
                   />
                 </g>
               )
             })}
             
-            {/* Center circle */}
-            <circle cx="50" cy="50" r="18" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1" />
+            {/* Center circle - uses currentColor to adapt to theme */}
+            <circle cx="50" cy="50" r="18" className="fill-white dark:fill-neutral-800 stroke-slate-200 dark:stroke-neutral-700" strokeWidth="1" />
           </svg>
           
           {/* Center text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className="text-sm font-bold text-slate-900">Total</div>
-              <div className="text-xs text-slate-600 font-medium">₦{(total/1000000).toFixed(1)}M</div>
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-100">Total</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">₦{(total/1000000).toFixed(1)}M</div>
             </div>
           </div>
         </div>
@@ -85,33 +83,35 @@ export default function SpendingBreakdown() {
       {/* Professional Legend - Compact */}
       <div className="space-y-1">
         {spendingData.map((item, index) => (
-          <div key={index} className="flex items-center justify-between p-1.5 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors duration-200">
+          <div key={index} className="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-neutral-800/50 rounded-lg hover:bg-slate-100 dark:hover:bg-neutral-800 transition-colors duration-200">
             <div className="flex items-center space-x-2">
-              {/* Color indicator */}
+              {/* Color indicator - use hex for consistency */}
               <div className="relative">
-                <div className={`w-3 h-3 rounded-full ${item.color} shadow-sm`}></div>
-                <div className="absolute inset-0 rounded-full ring-1 ring-white"></div>
+                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: item.hex }}></div>
+                <div className="absolute inset-0 rounded-full ring-1 ring-white dark:ring-neutral-700"></div>
               </div>
               
               {/* Category info */}
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <p className="font-medium text-slate-900 text-xs">{item.category}</p>
-                  <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
-                    item.trend.startsWith('+') 
-                      ? 'bg-emerald-100 text-emerald-700' 
-                      : 'bg-red-100 text-red-700'
-                  }`}>
-                    {item.trend}
-                  </span>
+                  <p className="font-medium text-slate-900 dark:text-slate-100 text-xs">{item.category}</p>
+                  {item.trend && (
+                    <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
+                      item.trend.startsWith('+') 
+                        ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400' 
+                        : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400'
+                    }`}>
+                      {item.trend}
+                    </span>
+                  )}
                 </div>
-                <p className="text-xs text-slate-500">{item.percentage.toFixed(1)}%</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{item.percentage.toFixed(1)}%</p>
               </div>
             </div>
             
             {/* Amount */}
             <div className="text-right">
-              <p className="font-semibold text-slate-900 text-xs">
+              <p className="font-semibold text-slate-900 dark:text-slate-100 text-xs">
                 {formatCurrency(item.amount)}
               </p>
             </div>
@@ -120,17 +120,17 @@ export default function SpendingBreakdown() {
       </div>
       
       {/* Summary Card */}
-      <div className="bg-blue-50 rounded-lg p-2 border border-blue-100">
+      <div className="bg-blue-50 dark:bg-blue-500/10 rounded-lg p-2 border border-blue-100 dark:border-blue-500/20">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-medium text-blue-900 text-sm">Monthly Spending</p>
-            <p className="text-xs text-blue-600">All categories</p>
+            <p className="font-medium text-blue-900 dark:text-blue-300 text-sm">Total Spending</p>
+            <p className="text-xs text-blue-600 dark:text-blue-400">All categories</p>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold text-blue-900">
+            <p className="text-lg font-bold text-blue-900 dark:text-blue-300">
               {formatCurrency(total)}
             </p>
-            <p className="text-xs text-blue-600">This month</p>
+            <p className="text-xs text-blue-600 dark:text-blue-400">{dateRangeLabel}</p>
           </div>
         </div>
       </div>

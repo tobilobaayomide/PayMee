@@ -25,23 +25,38 @@ export function StatCard({
   iconBgColor, 
   iconColor 
 }: StatCardProps) {
+  // Convert light colors to dark mode compatible versions
+  const getDarkBgColor = (lightColor: string) => {
+    if (lightColor.includes('blue')) return 'dark:bg-blue-500/10'
+    if (lightColor.includes('green')) return 'dark:bg-green-500/10'
+    if (lightColor.includes('red')) return 'dark:bg-red-500/10'
+    return 'dark:bg-slate-500/10'
+  }
+  
+  const getDarkIconColor = (lightColor: string) => {
+    if (lightColor.includes('blue')) return 'dark:text-blue-400'
+    if (lightColor.includes('green')) return 'dark:text-green-400'
+    if (lightColor.includes('red')) return 'dark:text-red-400'
+    return 'dark:text-slate-400'
+  }
+  
   return (
     <div className="compact-card rounded-xl p-3 sm:p-4">
       <div className="space-y-2 sm:space-y-3">
         <div className="flex items-center gap-2">
-          <div className={`p-1.5 sm:p-2 ${iconBgColor} rounded-lg flex-shrink-0`}>
-            <Icon className={`h-3 w-3 sm:h-4 sm:w-4 ${iconColor}`} />
+          <div className={`p-1.5 sm:p-2 ${iconBgColor} ${getDarkBgColor(iconBgColor)} rounded-lg flex-shrink-0`}>
+            <Icon className={`h-3 w-3 sm:h-4 sm:w-4 ${iconColor} ${getDarkIconColor(iconColor)}`} />
           </div>
-          <p className="text-xs font-medium text-slate-500 truncate">{title}</p>
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 truncate">{title}</p>
         </div>
         <div className="flex items-center justify-between gap-2">
-          <p className="text-sm sm:text-base font-bold text-slate-900 truncate">
+          <p className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 truncate">
             {formatCurrency(value)}
           </p>
           <span className={`text-xs font-semibold px-1.5 sm:px-2 py-1 rounded flex-shrink-0 ${
             changeType === 'positive' 
-              ? 'text-emerald-600 bg-emerald-50' 
-              : 'text-red-600 bg-red-50'
+              ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10' 
+              : 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10'
           }`}>
             {change}
           </span>
@@ -55,44 +70,63 @@ interface StatsOverviewProps {
   totalBalance: number
   totalIncome: number
   totalExpenses: number
+  balanceChange?: string
+  incomeChange?: string
+  expenseChange?: string
 }
 
 export default function StatsOverview({ 
   totalBalance, 
   totalIncome, 
-  totalExpenses 
+  totalExpenses,
+  balanceChange = '0.0',
+  incomeChange = '0.0',
+  expenseChange = '0.0'
 }: StatsOverviewProps) {
+  // Format change values with + or - sign
+  const formatChange = (change: string) => {
+    const numChange = parseFloat(change)
+    return numChange >= 0 ? `+${change}%` : `${change}%`
+  }
+
+  // Determine if change is positive or negative
+  const getChangeType = (change: string): 'positive' | 'negative' => {
+    return parseFloat(change) >= 0 ? 'positive' : 'negative'
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
       <StatCard
         title="Account Balance"
         value={totalBalance}
-        change="+12.5%"
-        changeType="positive"
+        change={formatChange(balanceChange)}
+        changeType={getChangeType(balanceChange)}
         icon={BanknotesIcon}
         iconBgColor="bg-blue-50"
         iconColor="text-blue-600"
       />
-      
-      <StatCard
-        title="Money In"
-        value={totalIncome}
-        change="+8.2%"
-        changeType="positive"
-        icon={ArrowUpIcon}
-        iconBgColor="bg-green-50"
-        iconColor="text-green-600"
-      />
-      
-      <StatCard
-        title="Money Out"
-        value={totalExpenses}
-        change="+3.1%"
-        changeType="negative"
-        icon={ArrowUpIcon}
-        iconBgColor="bg-red-50"
-        iconColor="text-red-600 rotate-180"
-      />
+      <div className="hidden sm:block">
+        <StatCard
+          title="Money In"
+          value={totalIncome}
+          change={formatChange(incomeChange)}
+          changeType={getChangeType(incomeChange)}
+          icon={ArrowUpIcon}
+          iconBgColor="bg-green-50"
+          iconColor="text-green-600"
+        />
+      </div>
+      <div className="hidden sm:block">
+        <StatCard
+          title="Money Out"
+          value={totalExpenses}
+          change={formatChange(expenseChange)}
+          changeType={getChangeType(expenseChange)}
+          icon={ArrowUpIcon}
+          iconBgColor="bg-red-50"
+          iconColor="text-red-600 rotate-180"
+        />
+      </div>
     </div>
   )
 }
