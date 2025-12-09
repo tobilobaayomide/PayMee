@@ -11,15 +11,26 @@
   --card-shadow-lg: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+  --card-shadow-lg: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+}
+
 body {
-  background: #ffffff;
+  background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Raleway', ui-sans-serif, system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+h1, h2, h3, h4, h5, h6, .font-header {
+  font-family: 'Josefin Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
 * {
   box-sizing: border-box;
 }
@@ -29,6 +40,11 @@ body {
   border: 1px solid #e2e8f0;
   box-shadow: var(--card-shadow);
   transition: all 0.2s ease;
+}
+
+.dark .compact-card {
+  background: #171717;
+  border: 1px solid #262626;
 }
 
 .compact-card:hover {
@@ -62,4 +78,9 @@ body {
   background: #ffffff;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.dark .search-input:focus {
+  background: #1e293b;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
