@@ -95,7 +95,7 @@ export async function updateUserEmail(newEmail: string): Promise<void> {
 /**
  * Update user metadata in auth.users
  */
-export async function updateUserMetadata(metadata: Record<string, any>): Promise<void> {
+export async function updateUserMetadata(metadata: Record<string, unknown>): Promise<void> {
   const supabase = createClient()
   
   const { error } = await supabase.auth.updateUser({

@@ -1,5 +1,6 @@
+// Removed duplicate import
 import { createClient } from '@/lib/supabase/client'
-import type { Card } from '@/types'
+import type { Card, Transaction } from '@/types'
 
 /**
  * Fetch user's card from Supabase
@@ -60,7 +61,7 @@ export async function updateCardSettings(
 ) {
   const supabase = createClient()
 
-  const updateData: any = {}
+  const updateData: Record<string, unknown> = {}
   if (settings.onlineEnabled !== undefined) {
     updateData.online_enabled = settings.onlineEnabled
   }
@@ -119,7 +120,7 @@ export async function calculateCardBalance(userId: string): Promise<number> {
   if (!data || data.length === 0) return 0
 
   let balance = 0
-  data.forEach((transaction) => {
+  data.forEach((transaction: Transaction) => {
     if (transaction.type === 'income') {
       balance += transaction.amount
     } else if (transaction.type === 'expense') {
@@ -150,7 +151,7 @@ export async function fetchAllUserCards(userId: string): Promise<Card[]> {
   if (!data || data.length === 0) return []
 
   // Map Supabase cards to our Card type
-  return data.map(card => ({
+  return data.map((card: any) => ({
     id: card.id,
     type: card.type,
     last4: card.last4,

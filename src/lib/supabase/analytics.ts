@@ -1,3 +1,4 @@
+import type { Card } from '../../types';
 /**
  * Get payment method usage breakdown for the specified date range
  */
@@ -238,7 +239,7 @@ export async function getCategorySpending(
   }
 
   // Get current period transactions
-  let currentQuery = supabase
+  const currentQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -247,7 +248,7 @@ export async function getCategorySpending(
     .lte('date', currentEndDate.toISOString())
 
   // Get previous period transactions for comparison
-  let lastQuery = supabase
+  const lastQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -384,12 +385,12 @@ export async function getAnalyticsOverview(
   const [
     { data: allTransactions, error: allError },
     { data: currentPeriodTransactions, error: currentError },
-    { data: lastPeriodTransactions, error: lastError },
-    { data: cards, error: cardsError }
+  { data: lastPeriodTransactions },
+  { data: cards }
   ] = await Promise.all([allQuery, currentQuery, lastQuery, cardsQuery])
 
-  if (allError || currentError || lastError) {
-    console.error('Error fetching analytics data:', { allError, currentError, lastError })
+  if (allError || currentError) {
+    console.error('Error fetching analytics data:', { allError, currentError })
     return {
       monthlyGrowth: null,
       avgMonthlyIncome: 0,
@@ -629,7 +630,7 @@ export async function getDashboardStats(
     : 0
 
   // Calculate total balance from cards
-  const totalBalance = cards?.reduce((sum, card) => sum + (card.balance || 0), 0) || 0
+  const totalBalance = cards?.reduce((sum: number, card: Card) => sum + (card.balance || 0), 0) || 0
 
   return {
     totalBalance,
