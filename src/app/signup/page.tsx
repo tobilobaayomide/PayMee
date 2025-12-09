@@ -102,16 +102,18 @@ export default function SignUp() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-2xl sm:text-3xl font-bold text-gray-900">
             CREATE YOUR ACCOUNT
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Manage Your Finances With PayMee
-          </p>
         </div>
+          <div className="text-center">
+            <p className="mt-1 text-[14px] sm:text-sm text-gray-600">
+              Manage Your Finances With PayMee
+            </p>
+          </div>
       </div>
 
-      <div className="mt-6 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-1 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-6 sm:py-8 px-4 sm:px-10 shadow-xl shadow-blue-100/50 sm:rounded-2xl border sm:border-0 border-gray-200">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -279,8 +281,8 @@ export default function SignUp() {
             </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+          <div className="mt-4 sm:mt-6 text-center">
+            <p className="text-xs sm:text-sm text-gray-600">
               Already have an account?{' '}
               <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign In Here
@@ -288,8 +290,8 @@ export default function SignUp() {
             </p>
           </div>
 
-          <div className="mt-4 text-center">
-            <p className="text-xs text-gray-500">
+          <div className="mt-2 sm:mt-4 text-center">
+            <p className="text-[10px] sm:text-xs text-gray-500">
               By creating an account, you agree to our{' '}
               <a href="#" className="text-blue-600 hover:text-blue-500">Terms of Service</a>{' '}
               and{' '}
@@ -298,8 +300,8 @@ export default function SignUp() {
           </div>
 
           {/* Subtle footer branding */}
-          <div className="mt-6 text-center">
-            <p className="text-xs text-gray-400">
+          <div className="mt-2 sm:mt-6 text-center">
+            <p className="text-[10px] sm:text-xs text-gray-400">
               Powered by PayMee Financial Dashboard
             </p>
           </div>
