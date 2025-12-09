@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { createSession } from '@/lib/supabase/sessions'
 import Link from 'next/link'
 import { Eye, EyeOff, Mail, Lock, CheckCircle } from 'lucide-react'
 
@@ -36,14 +37,16 @@ export default function Login() {
     try {
       setLoading(true)
       
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       
       if (error) {
         setError(error.message)
-      } else {
+      } else if (data.session) {
+        // Create session record in database
+        await createSession(data.user.id, data.session.access_token)
         window.location.href = '/'
       }
     } catch {
