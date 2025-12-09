@@ -25,6 +25,15 @@ export interface Card {
   balance: number
   isActive: boolean
   color: string
+  isBlocked?: boolean
+  onlineEnabled?: boolean
+  internationalEnabled?: boolean
+  contactlessEnabled?: boolean
+  pinSet?: boolean
+  atmLimit?: number
+  onlineLimit?: number
+  posLimit?: number
+  atmWithdrawalsEnabled?: boolean
 }
 
 export interface Account {
@@ -61,4 +70,16 @@ export interface DashboardStats {
   monthlyGrowth: number
   transactionCount: number
   activeCards: number
+}
+
+export interface Notification {
+  id: string
+  user_id: string
+  title: string
+  message: string
+  type: 'info' | 'success' | 'warning' | 'error' | 'transaction'
+  is_read: boolean
+  link?: string
+  transaction_id?: string
+  created_at: Date
 }
