@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createSession } from '@/lib/supabase/sessions'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
@@ -15,7 +16,16 @@ export async function GET(request: NextRequest) {
       
       console.log('Exchange code result:', { error: error?.message, hasSession: !!data.session })
       
-      if (!error) {
+      if (!error && data.session) {
+        // Create session record in database
+        try {
+          await createSession(data.session.user.id, data.session.access_token)
+          console.log('Session record created successfully')
+        } catch (sessionError) {
+          console.error('Failed to create session record:', sessionError)
+          // Don't fail the auth flow if session creation fails
+        }
+        
         const forwardedHost = request.headers.get('x-forwarded-host')
         const isLocalEnv = process.env.NODE_ENV === 'development'
         
@@ -32,7 +42,7 @@ export async function GET(request: NextRequest) {
         } else {
           return NextResponse.redirect(`${origin}${redirectUrl}`)
         }
-      } else {
+      } else if (error) {
         console.error('Session exchange error:', error.message)
       }
     } catch (err) {
