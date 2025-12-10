@@ -1,14 +1,13 @@
 'use client'
 
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, ArrowsRightLeftIcon, BanknotesIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline'
 import { PinVerificationModal } from '@/components/PinVerificationModal'
 import { TransactionSuccessModal } from '@/components/TransactionSuccessModal'
 import { addTransaction } from '@/lib/supabase/transactions'
 import { createNotification } from '@/lib/supabase/notifications'
 import { useUser } from '@/components/providers/UserProvider'
-import { formatCurrency } from '@/lib/utils'
 
 interface ExchangeModalProps {
   isOpen: boolean
@@ -133,7 +132,7 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
     setIsPinModalOpen(true)
   }
 
-  const handlePinVerify = async (pin: string) => {
+  const handlePinVerify = async (_pin: string) => {
     if (!user?.id) return
 
     setLoading(true)
@@ -147,11 +146,11 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
       const transaction = {
         user_id: user.id,
         amount: numAmount,
-        type: 'expense' as 'expense',
+  type: 'expense' as const,
         category: 'Exchange',
         description: `Currency Exchange: ${currencies[fromCurrency].symbol}${numAmount.toLocaleString()} ${fromCurrency} → ${currencies[toCurrency].symbol}${totalReceived.toFixed(2)} ${toCurrency}`,
   date: new Date(),
-  status: 'completed' as 'completed',
+  status: 'completed' as const,
         reference: `EXG-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         metadata: {
@@ -368,7 +367,7 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
                         </div>
                         <div className="pt-2 border-t border-slate-200 dark:border-neutral-700 flex justify-between">
                           <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                            You'll Receive
+                            You&apos;ll Receive
                           </span>
                           <span className="text-lg font-bold text-green-600 dark:text-green-400">
                             {currencies[toCurrency].symbol}

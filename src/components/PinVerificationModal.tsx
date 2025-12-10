@@ -33,7 +33,7 @@ export function PinVerificationModal({
         inputRefs[0].current?.focus()
       }, 100)
     }
-  }, [isOpen])
+  }, [isOpen, inputRefs])
 
   const handleChange = (index: number, value: string) => {
     // Only allow numbers

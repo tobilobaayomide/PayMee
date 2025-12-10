@@ -1,8 +1,9 @@
+
+'use client'
 import type { SendMoneyTransaction } from './quickactions/SendMoneyModal'
 import type { TopUpTransaction } from './quickactions/TopUpModal'
 import type { InvestmentTransaction } from './quickactions/InvestmentModal'
 import type { ExchangeTransaction } from './quickactions/ExchangeModal'
-'use client'
 
 import { useState } from 'react'
 import { SendMoneyModal } from '@/components/quickactions/SendMoneyModal'

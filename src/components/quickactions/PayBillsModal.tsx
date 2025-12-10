@@ -15,8 +15,6 @@ import {
   TvIcon,
   BoltIcon,
   WifiIcon,
-  HomeIcon,
-  AcademicCapIcon,
   ShieldCheckIcon,
 } from '@heroicons/react/24/outline'
 
@@ -260,7 +258,7 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
     setIsPinModalOpen(true)
   }
 
-  const handlePinVerify = async (pin: string) => {
+  const handlePinVerify = async (_pin: string) => {
     if (!user?.id || !selectedCategory) return
 
     const amount = parseFloat(formData.amount)
@@ -281,12 +279,12 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
       // Create transaction
       const transaction = {
         user_id: user.id,
-        type: 'expense' as 'expense',
+      type: 'expense' as const,
         amount: amount,
         description: description,
         category: 'Bills',
         date: new Date(),
-        status: 'completed' as 'completed',
+      status: 'completed' as const,
         reference: `BILL-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         recipient_account: accountIdentifier,

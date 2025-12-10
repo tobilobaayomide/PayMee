@@ -2,8 +2,8 @@
 
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, LockClosedIcon } from '@heroicons/react/24/outline'
-import { updateCardSettings, updateCardBlockStatus, updateCardLimits } from '@/lib/supabase/cards'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { updateCardSettings, updateCardLimits } from '@/lib/supabase/cards'
 import type { Card } from './types'
 
 interface CardManagementModalProps {

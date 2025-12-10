@@ -26,15 +26,8 @@ export function ReceiveMoneyModal({ isOpen, onClose }: ReceiveMoneyModalProps) {
   const [isLoading, setIsLoading] = useState(true)
 
   // Fetch user profile when modal opens
-  useEffect(() => {
-    if (isOpen && user?.id) {
-      loadProfile()
-    }
-  }, [isOpen, user?.id])
-
   const loadProfile = async () => {
     if (!user?.id) return
-    
     setIsLoading(true)
     try {
       const userProfile = await fetchUserProfile(user.id)
@@ -45,6 +38,12 @@ export function ReceiveMoneyModal({ isOpen, onClose }: ReceiveMoneyModalProps) {
       setIsLoading(false)
     }
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (isOpen && user?.id) {
+      loadProfile()
+    }
+  }, [isOpen, user?.id])
 
   // Use profile data or fallback values
   const accountNumber = profile?.account_number || '0000000000'

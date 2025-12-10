@@ -56,7 +56,6 @@ export default function BalanceChart() {
   const isDark = resolvedTheme === 'dark'
   const gridColor = isDark ? '#334155' : '#f1f5f9'
   const axisColor = isDark ? '#94a3b8' : '#94a3b8'
-  const labelColor = isDark ? '#f1f5f9' : '#0f172a'
   const tooltipBg = isDark ? 'rgba(30,41,59,0.98)' : 'rgba(255,255,255,0.98)'
   const tooltipBorder = isDark ? '#334155' : '#e2e8f0'
   const tooltipText = isDark ? '#f1f5f9' : '#0f172a'

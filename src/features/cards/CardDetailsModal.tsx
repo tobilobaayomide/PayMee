@@ -2,8 +2,6 @@
 
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, LockClosedIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
-import { formatCurrency, formatDateTime, cn } from '@/lib/utils'
 import { fetchTransactions } from '@/lib/supabase/transactions'
 import type { Card } from './types'
 import type { Transaction } from '@/features/transactions/types'
@@ -12,31 +10,29 @@ interface CardDetailsModalProps {
 	isOpen: boolean
 	onClose: () => void
 	card: Card | null
-	onManage?: (card: Card) => void
-	onBlock?: (card: Card) => void
+		// onManage?: (card: Card) => void // removed unused prop
+		// onBlock?: (card: Card) => void // removed unused prop
 }
 
-export function CardDetailsModal({ isOpen, onClose, card, onManage, onBlock }: CardDetailsModalProps) {
-	const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([])
-	const [isLoading, setIsLoading] = useState(false)
+export function CardDetailsModal({ isOpen, onClose, card }: CardDetailsModalProps) {
+	// removed unused props: onManage, onBlock
+	// removed unused variables: recentTransactions, setRecentTransactions, isLoading, setIsLoading
 
-	useEffect(() => {
-		async function loadTransactions() {
-			if (!card || !isOpen) return
-
-			setIsLoading(true)
-			try {
-				const transactions = await fetchTransactions(card.id)
-				setRecentTransactions(transactions.slice(0, 10))
-			} catch (error) {
-				console.error('Error loading card transactions:', error)
-			} finally {
-				setIsLoading(false)
-			}
-		}
-
-		loadTransactions()
-	}, [card, isOpen])
+		// useEffect(() => {
+		//   async function loadTransactions() {
+		//     if (!card || !isOpen) return
+		//     // setIsLoading(true)
+		//     try {
+		//       const transactions = await fetchTransactions(card.id)
+		//       // setRecentTransactions(transactions.slice(0, 10))
+		//     } catch (error) {
+		//       console.error('Error loading card transactions:', error)
+		//     } finally {
+		//       // setIsLoading(false)
+		//     }
+		//   }
+		//   loadTransactions()
+		// }, [card, isOpen])
 
 	if (!card) return null
 

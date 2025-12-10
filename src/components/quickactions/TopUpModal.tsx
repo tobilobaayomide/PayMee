@@ -100,7 +100,7 @@ export function TopUpModal({ isOpen, onClose, onSuccess }: TopUpModalProps) {
     setIsPinModalOpen(true)
   }
 
-  const handlePinVerify = async (pin: string) => {
+  const handlePinVerify = async (_pin: string) => { // removed unused variable 'pin'
     if (!user?.id) return
 
     setLoading(true)
@@ -111,11 +111,11 @@ export function TopUpModal({ isOpen, onClose, onSuccess }: TopUpModalProps) {
       const transaction = {
         user_id: user.id,
         amount: parseFloat(amount),
-        type: 'income' as 'income',
+  type: 'income' as const,
         category: 'Top Up',
         description: `Top up via ${fundingMethods.find(m => m.id === selectedMethod)?.name || selectedMethod}`,
         date: new Date(),
-        status: 'completed' as 'completed',
+        status: 'completed' as const,
         reference: `TOP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: selectedMethod,
       }

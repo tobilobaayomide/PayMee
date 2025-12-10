@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { formatCurrency, formatDate, formatDateTime, cn } from '@/lib/utils'
+import { formatCurrency, formatDateTime, cn } from '@/lib/utils'
 import { useTransactionContext } from '@/features/transactions/TransactionContext'
 import { TransactionDetailsModal } from '@/features/transactions/TransactionDetailsModal'
 import type { Transaction } from '@/features/transactions/types'

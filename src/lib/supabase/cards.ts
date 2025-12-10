@@ -20,7 +20,7 @@ type RawCard = {
 };
 // Removed duplicate import
 import { createClient } from '@/lib/supabase/client'
-import type { Card, Transaction } from '@/types'
+import type { Card  } from '@/types'
 
 /**
  * Fetch user's card from Supabase

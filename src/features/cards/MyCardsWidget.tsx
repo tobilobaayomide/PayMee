@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useUser } from '@/components/providers/UserProvider'
 import { fetchUserCard } from '@/lib/supabase/cards'

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { Transaction, DashboardStats } from '@/types'
+import { Transaction } from '@/types'
 import { fetchTransactions } from '@/lib/supabase/transactions'
 import { useUser } from '@/components/providers/UserProvider'
 

@@ -2,7 +2,7 @@
 
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckCircleIcon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { formatCurrency } from '@/lib/utils'
 
 interface TransactionSuccessModalProps {

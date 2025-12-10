@@ -13,7 +13,6 @@ import { NotificationsDropdown } from '@/features/settings/NotificationsDropdown
 import {
   Bars3Icon,
   XMarkIcon,
-  BellIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline'
 

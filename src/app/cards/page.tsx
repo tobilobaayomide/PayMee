@@ -10,16 +10,15 @@ import { fetchUserCard, updateCardSettings, updateCardBlockStatus, setCardPin, v
 import { fetchTransactions } from '@/lib/supabase/transactions'
 import { useDashboardStats } from '@/hooks'
 import type { Card, Transaction } from '@/types'
-import { 
+import {
   CreditCardIcon,
   EyeIcon,
   EyeSlashIcon,
   ArrowPathIcon,
   PlusIcon,
-  WifiIcon,
   LockClosedIcon,
   Cog6ToothIcon
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline' // removed WifiIcon (unused)
 import { CardManagementModal } from '@/features/cards/CardManagementModal'
 import { BlockCardModal } from '@/features/cards/BlockCardModal'
 import { SetPinModal } from '@/features/cards/SetPinModal'
@@ -584,16 +583,7 @@ export default function CardsPage() {
         </div>
 
         {/* Modals */}
-        <SetPinModal
-          isOpen={showSetPinModal}
-          onClose={() => {
-            if (card?.pinSet) {
-              setShowSetPinModal(false)
-            }
-          }}
-          onSuccess={handleSetPin}
-          cardLast4={card?.last4 || '****'}
-        />
+        <SetPinModal />
 
         <PinVerificationModal
           isOpen={showPinVerifyModal}

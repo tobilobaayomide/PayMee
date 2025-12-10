@@ -20,7 +20,6 @@ export default function Home() {
   const { user } = useUser()
   const [showWelcomeModal, setShowWelcomeModal] = useState(false)
   const [showSetPinModal, setShowSetPinModal] = useState(false)
-  const [checkingPin, setCheckingPin] = useState(true)
   const [accountNumber, setAccountNumber] = useState('')
   const [userName, setUserName] = useState('')
 
@@ -41,7 +40,6 @@ export default function Home() {
         // If profile doesn't exist, don't show modals
         if (!profile) {
           console.error('❌ No profile found - trigger may not be working')
-          setCheckingPin(false)
           return
         }
 
@@ -53,7 +51,6 @@ export default function Home() {
         if (!profile.has_seen_welcome) {
           console.log('� New user - showing welcome modal')
           setShowWelcomeModal(true)
-          setCheckingPin(false)
           return
         }
         
@@ -73,7 +70,6 @@ export default function Home() {
       } catch (error) {
         console.error('❌ Error checking user status:', error)
       } finally {
-        setCheckingPin(false)
       }
     }
 

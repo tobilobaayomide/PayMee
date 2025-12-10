@@ -1,5 +1,6 @@
-import type { Transaction } from '@/types';
+
 'use client'
+import type { Transaction } from '@/types';
 
 import DashboardLayout from '@/components/DashboardLayout'
 import TransactionList from '@/features/transactions/TransactionList'
@@ -11,13 +12,12 @@ import {
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
   ClockIcon,
-  PlusIcon,
   ArrowDownTrayIcon
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline' // removed PlusIcon (unused)
 import { useMemo } from 'react'
 
 function TransactionsContent() {
-  const { transactions, allTransactions, isLoading, resetFilters, refreshTransactions } = useTransactionContext()
+  const { transactions, allTransactions, isLoading, resetFilters } = useTransactionContext() // removed unused refreshTransactions
 
   // Export transactions to CSV
   const handleExportTransactions = () => {

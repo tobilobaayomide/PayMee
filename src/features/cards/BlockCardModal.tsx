@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline' // removed unused ExclamationTriangleIcon
 
 interface BlockCardModalProps {
 	isOpen: boolean
@@ -54,10 +54,11 @@ export function BlockCardModal({ isOpen, onClose, onConfirm, isBlocked, cardLast
 					: 'Your card has been blocked successfully. You will not be able to make transactions until you unblock it.'
 			})
 			setShowSuccess(true)
-		} catch (error) {
-			alert('Failed to update card status. Please try again.')
-		} finally {
-			setIsSubmitting(false)
+			} catch (error) {
+				// removed unused variable 'error'
+				alert('Failed to update card status. Please try again.')
+			} finally {
+				setIsSubmitting(false)
 		}
 	}
 

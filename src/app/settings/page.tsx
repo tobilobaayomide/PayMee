@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import DashboardLayout from '@/components/DashboardLayout'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { useUser } from '@/components/providers/UserProvider'
@@ -12,7 +13,6 @@ import {
   updateUserMetadata,
   updateUserPassword,
   uploadAvatar,
-  type UserProfile 
 } from '@/lib/supabase/profiles'
 import {
   fetchUserSessions,
@@ -48,7 +48,7 @@ type NotificationPreferences = {
 export default function SettingsPage() {
   const { user } = useUser()
   const [activeTab, setActiveTab] = useState('profile')
-  const [profile, setProfile] = useState<UserProfile | null>(null)
+  // const [profile, setProfile] = useState<UserProfile | null>(null) // removed unused variable
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
@@ -121,7 +121,7 @@ export default function SettingsPage() {
         const authLastName = user.user_metadata?.last_name || user.user_metadata?.full_name?.split(' ').slice(1).join(' ')
         
         if (data) {
-          setProfile(data)
+          // setProfile(data) // removed unused variable
           // Use profiles table data first, fallback to auth metadata
           setFirstName(data.first_name || authFirstName || '')
           setLastName(data.last_name || authLastName || '')
@@ -233,8 +233,7 @@ export default function SettingsPage() {
       }
 
       // Reload profile
-      const updated = await fetchUserProfile(user.id)
-      if (updated) setProfile(updated)
+    await fetchUserProfile(user.id)
       
       console.log('✅ Profile saved:', { firstName, lastName, phone, email })
     } catch (error: unknown) {
@@ -601,9 +600,11 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-3 sm:gap-6 p-2 sm:p-4 bg-slate-50 dark:bg-neutral-800 rounded-lg">
                     <div className="relative">
                       {avatarPreview ? (
-                        <img 
-                          src={avatarPreview} 
-                          alt="Profile" 
+                        <Image
+                          src={avatarPreview}
+                          alt="Profile"
+                          width={80}
+                          height={80}
                           className="w-12 h-12 sm:w-20 sm:h-20 rounded-full object-cover"
                         />
                       ) : (
@@ -991,7 +992,7 @@ export default function SettingsPage() {
                       className="w-full border border-slate-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-slate-900 dark:text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                      We'll send a verification code to this number
+                      We&apos;ll send a verification code to this number
                     </p>
                   </div>
 

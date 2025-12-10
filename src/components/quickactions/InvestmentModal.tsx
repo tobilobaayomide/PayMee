@@ -152,7 +152,7 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
     setIsPinModalOpen(true)
   }
 
-  const handlePinVerify = async (pin: string) => {
+  const handlePinVerify = async (_pin: string) => {
     if (!user?.id || !selectedPlan) return
 
     setLoading(true)
@@ -163,7 +163,7 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
       const { maturityAmount, interest } = calculateReturns()
 
       let description = ''
-      let maturityDate = new Date()
+  const maturityDate = new Date()
 
       if (selectedPlan.type === 'fixed') {
         maturityDate.setDate(maturityDate.getDate() + duration)
@@ -176,11 +176,11 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
       const transaction = {
         user_id: user.id,
         amount: numAmount,
-        type: 'expense' as 'expense',
+        type: 'expense' as const,
         category: 'Investment',
         description,
         date: new Date(),
-        status: 'completed' as 'completed',
+  status: 'completed' as const,
         reference: `INV-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         metadata: {

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext } from 'react'
 import { useTransactions } from '@/features/transactions/useTransactions'
 
 type TransactionContextType = ReturnType<typeof useTransactions>

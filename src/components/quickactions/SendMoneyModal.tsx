@@ -114,7 +114,7 @@ export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalPro
     setIsPinModalOpen(true)
   }
 
-  const handlePinVerify = async (pin: string) => {
+  const handlePinVerify = async (_pin: string) => { // removed unused variable 'pin'
     // In a real app, you would verify the PIN with your backend
     // For now, we'll accept any 4-digit PIN
     
@@ -132,12 +132,12 @@ export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalPro
       
       const transaction = {
         user_id: user.id,
-        type: 'expense' as 'expense',
+  type: 'expense' as const,
         amount: amount,
         description: transactionDescription,
         category: 'Transfer',
         date: new Date(),
-        status: 'completed' as 'completed',
+  status: 'completed' as const,
         reference: `TRF-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: formData.paymentMethod,
         recipient_account: formData.accountNumber,

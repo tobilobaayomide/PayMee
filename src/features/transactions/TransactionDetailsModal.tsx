@@ -22,16 +22,12 @@ interface TransactionDetailsModalProps {
   isOpen: boolean
   onClose: () => void
   transaction: Transaction | null
-  onEdit?: (transaction: Transaction) => void
-  onDelete?: (transaction: Transaction) => void
 }
 
 export function TransactionDetailsModal({
   isOpen,
   onClose,
-  transaction,
-  onEdit,
-  onDelete,
+  transaction
 }: TransactionDetailsModalProps) {
   if (!transaction) return null
 
