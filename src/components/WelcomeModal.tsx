@@ -59,7 +59,7 @@ export function WelcomeModal({ isOpen, onClose, accountNumber, userName }: Welco
 
                 <div className="space-y-4">
                   <p className="text-gray-600">
-                    {userName ? `Hi ${userName}! ` : 'Hi! '}
+               {userName ? `Hi ${userName}! ` : 'Hi! '}
                     Your account has been successfully created.
                   </p>
 
@@ -90,7 +90,7 @@ export function WelcomeModal({ isOpen, onClose, accountNumber, userName }: Welco
 
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                     <p className="text-sm text-yellow-800">
-                      <strong>Next Step:</strong> You'll be asked to set up a transaction PIN to secure your account.
+                      <strong>Next Step:</strong> You&apos;ll be asked to set up a transaction PIN to secure your account.
                     </p>
                   </div>
                 </div>

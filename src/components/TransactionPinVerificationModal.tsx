@@ -107,9 +107,13 @@ export function TransactionPinVerificationModal({
         setIsVerifying(false)
         inputRefs.current[0]?.focus()
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error verifying transaction PIN:', error)
-      setError(error?.message || 'Failed to verify PIN. Please try again.')
+      if (typeof error === 'object' && error && 'message' in error) {
+        setError((error as { message?: string }).message || 'Failed to verify PIN. Please try again.')
+      } else {
+        setError('Failed to verify PIN. Please try again.')
+      }
       setPin(['', '', '', ''])
       setIsVerifying(false)
       inputRefs.current[0]?.focus()

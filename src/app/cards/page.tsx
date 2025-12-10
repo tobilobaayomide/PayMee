@@ -122,7 +122,7 @@ export default function CardsPage() {
     try {
       setIsSaving(true)
       
-      const settings: any = {}
+  const settings: Record<string, boolean> = {}
       if (setting === 'online') settings.onlineEnabled = value
       if (setting === 'international') settings.internationalEnabled = value
       if (setting === 'contactless') settings.contactlessEnabled = value

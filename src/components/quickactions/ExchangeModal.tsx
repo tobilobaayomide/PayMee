@@ -13,7 +13,16 @@ import { formatCurrency } from '@/lib/utils'
 interface ExchangeModalProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (transaction: any) => void
+  onSuccess?: (transaction: ExchangeTransaction) => void
+}
+
+export interface ExchangeTransaction {
+  amount: number
+  recipient_bank: string
+  recipient_account: string
+  reference: string
+  description?: string
+  date: string
 }
 
 type Currency = 'NGN' | 'USD'
@@ -57,7 +66,7 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
   const [error, setError] = useState('')
   const [isPinModalOpen, setIsPinModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [completedTransaction, setCompletedTransaction] = useState<any>(null)
+  const [completedTransaction, setCompletedTransaction] = useState<ExchangeTransaction | null>(null)
 
   const handleClose = () => {
     setFromCurrency('NGN')
@@ -135,14 +144,14 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
       const { convertedAmount, fee, totalReceived, rate } = calculateExchange()
 
       // Create exchange transaction (expense in source currency)
-      const transaction: any = {
+      const transaction = {
         user_id: user.id,
         amount: numAmount,
-        type: 'expense',
+        type: 'expense' as 'expense',
         category: 'Exchange',
         description: `Currency Exchange: ${currencies[fromCurrency].symbol}${numAmount.toLocaleString()} ${fromCurrency} → ${currencies[toCurrency].symbol}${totalReceived.toFixed(2)} ${toCurrency}`,
-        date: new Date().toISOString(),
-        status: 'completed',
+  date: new Date(),
+  status: 'completed' as 'completed',
         reference: `EXG-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         metadata: {
@@ -187,9 +196,13 @@ export function ExchangeModal({ isOpen, onClose, onSuccess }: ExchangeModalProps
           onSuccess(result)
         }
       }, 100)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Exchange error:', err)
-      setError(err.message || 'Failed to complete exchange. Please try again.')
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as { message?: string }).message || 'Failed to complete exchange. Please try again.')
+      } else {
+        setError('Failed to complete exchange. Please try again.')
+      }
       setIsPinModalOpen(false)
     } finally {
       setLoading(false)

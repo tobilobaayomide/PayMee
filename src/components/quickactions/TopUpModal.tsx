@@ -13,7 +13,16 @@ import { formatCurrency } from '@/lib/utils'
 interface TopUpModalProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (transaction: any) => void
+  onSuccess?: (transaction: TopUpTransaction) => void
+}
+
+export interface TopUpTransaction {
+  amount: number
+  recipient_bank: string
+  recipient_account: string
+  reference: string
+  description?: string
+  date: string
 }
 
 type FundingMethod = 'card' | 'bank' | 'cash'
@@ -46,7 +55,7 @@ export function TopUpModal({ isOpen, onClose, onSuccess }: TopUpModalProps) {
   const [selectedMethod, setSelectedMethod] = useState<FundingMethod>('card')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [completedTransaction, setCompletedTransaction] = useState<any>(null)
+  const [completedTransaction, setCompletedTransaction] = useState<TopUpTransaction | null>(null)
   const [isPinModalOpen, setIsPinModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
 
@@ -99,14 +108,14 @@ export function TopUpModal({ isOpen, onClose, onSuccess }: TopUpModalProps) {
 
     try {
       // Create transaction
-      const transaction: any = {
+      const transaction = {
         user_id: user.id,
         amount: parseFloat(amount),
-        type: 'income',
+        type: 'income' as 'income',
         category: 'Top Up',
         description: `Top up via ${fundingMethods.find(m => m.id === selectedMethod)?.name || selectedMethod}`,
-        date: new Date().toISOString(),
-        status: 'completed',
+        date: new Date(),
+        status: 'completed' as 'completed',
         reference: `TOP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: selectedMethod,
       }
@@ -141,9 +150,13 @@ export function TopUpModal({ isOpen, onClose, onSuccess }: TopUpModalProps) {
         }
       }, 100)
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Top up error:', err)
-      setError(err.message || 'Failed to complete top-up. Please try again.')
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as { message?: string }).message || 'Failed to complete top-up. Please try again.')
+      } else {
+        setError('Failed to complete top-up. Please try again.')
+      }
       setIsPinModalOpen(false)
       setStep('method')
     } finally {

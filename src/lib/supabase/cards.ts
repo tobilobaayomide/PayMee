@@ -1,3 +1,23 @@
+// Type for raw card data from Supabase
+type RawCard = {
+  id: string;
+  type: string;
+  last4: string;
+  bank_name?: string;
+  expiry_date: string;
+  balance: number;
+  is_active: boolean;
+  color: string;
+  is_blocked?: boolean;
+  online_enabled?: boolean;
+  international_enabled?: boolean;
+  contactless_enabled?: boolean;
+  pin_set?: boolean;
+  atm_limit?: number;
+  online_limit?: number;
+  pos_limit?: number;
+  atm_withdrawals_enabled?: boolean;
+};
 // Removed duplicate import
 import { createClient } from '@/lib/supabase/client'
 import type { Card, Transaction } from '@/types'
@@ -120,7 +140,7 @@ export async function calculateCardBalance(userId: string): Promise<number> {
   if (!data || data.length === 0) return 0
 
   let balance = 0
-  data.forEach((transaction: Transaction) => {
+    data.forEach((transaction: { type: string; amount: number }) => {
     if (transaction.type === 'income') {
       balance += transaction.amount
     } else if (transaction.type === 'expense') {
@@ -151,9 +171,9 @@ export async function fetchAllUserCards(userId: string): Promise<Card[]> {
   if (!data || data.length === 0) return []
 
   // Map Supabase cards to our Card type
-  return data.map((card: any) => ({
+  return data.map((card: RawCard) => ({
     id: card.id,
-    type: card.type,
+      type: card.type === 'debit' || card.type === 'credit' ? card.type : 'debit',
     last4: card.last4,
     bank: card.bank_name || 'PayMee Bank',
     expiryDate: card.expiry_date,
@@ -306,7 +326,7 @@ export async function updateCardLimits(
 ) {
   const supabase = createClient()
 
-  const updateData: any = {}
+  const updateData: Record<string, unknown> = {}
   if (limits.atmLimit !== undefined) {
     updateData.atm_limit = limits.atmLimit
   }
@@ -342,7 +362,7 @@ export async function updateCardControls(
 ) {
   const supabase = createClient()
 
-  const updateData: any = {}
+  const updateData: Record<string, unknown> = {}
   if (controls.onlineEnabled !== undefined) {
     updateData.online_enabled = controls.onlineEnabled
   }

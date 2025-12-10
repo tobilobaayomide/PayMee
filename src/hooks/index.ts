@@ -25,9 +25,13 @@ export function useDashboardStats() {
     try {
       const data = await fetchTransactions(user.id)
       setTransactions(data)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load transactions:', err)
-      setError(err.message || 'Failed to load transactions')
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as { message?: string }).message || 'Failed to load transactions')
+      } else {
+        setError('Failed to load transactions')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -163,7 +167,7 @@ export function useTransactions() {
     try {
       const data = await fetchTransactions(user.id)
       setTransactions(data)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load transactions:', err)
     } finally {
       setIsLoading(false)

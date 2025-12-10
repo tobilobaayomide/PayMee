@@ -30,7 +30,7 @@ export async function getPaymentMethodUsage(
   // Count usage per method
   const methodMap = new Map<string, number>()
   let total = 0
-  transactions.forEach((t: any) => {
+  transactions.forEach((t: { payment_method?: string }) => {
     const method = t.payment_method || 'Other'
     methodMap.set(method, (methodMap.get(method) || 0) + 1)
     total++
@@ -148,7 +148,7 @@ export async function getMonthlyTrend(
   const monthlyMap = new Map<string, { income: number; expenses: number }>()
   let minYear = 9999, minMonth = 0, maxYear = 0, maxMonth = 0;
 
-  transactions?.forEach((transaction: any) => {
+  transactions?.forEach((transaction: { date?: string, created_at?: string, type: string, amount: number }) => {
     // IMPORTANT: Use 'date' field first (the actual transaction date), not 'created_at'
     let date: Date
     if (transaction.date) {
@@ -257,7 +257,7 @@ export async function getCategorySpending(
     .lte('date', lastEndDate.toISOString())
 
   const { data: currentPeriodTransactions, error: currentError } = await currentQuery
-  const { data: lastPeriodTransactions, error: lastError } = await lastQuery
+  const { data: lastPeriodTransactions } = await lastQuery
 
   if (currentError) {
     console.error('Error fetching current period transactions:', currentError)
@@ -360,7 +360,7 @@ export async function getAnalyticsOverview(
   }
 
   // Get current period transactions
-  let currentQuery = supabase
+  const currentQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -368,7 +368,7 @@ export async function getAnalyticsOverview(
     .lte('date', currentEndDate.toISOString())
 
   // Get last period transactions
-  let lastQuery = supabase
+  const lastQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -437,8 +437,10 @@ export async function getAnalyticsOverview(
 
   // Calculate averages (from all transactions in selected period)
   const monthsMap = new Map<string, { income: number; expenses: number }>()
-  allTransactions?.forEach((t: any) => {
-    const date = new Date(t.date || t.created_at)
+  allTransactions?.forEach((t: { date?: string, created_at?: string, type: string, amount: number }) => {
+  const dateString = t.date ?? t.created_at;
+  if (!dateString) return;
+  const date = new Date(dateString);
     const monthKey = `${date.getFullYear()}-${date.getMonth()}`
     const monthData = monthsMap.get(monthKey) || { income: 0, expenses: 0 }
     
@@ -567,7 +569,7 @@ export async function getDashboardStats(
   }
 
   // Get current period transactions
-  let currentQuery = supabase
+  const currentQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -575,7 +577,7 @@ export async function getDashboardStats(
     .lte('date', currentEndDate.toISOString())
 
   // Get last period transactions
-  let lastQuery = supabase
+  const lastQuery = supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
@@ -591,12 +593,12 @@ export async function getDashboardStats(
 
   const [
     { data: currentPeriodTransactions, error: currentError },
-    { data: lastPeriodTransactions, error: lastError },
-    { data: cards, error: cardsError }
+  { data: lastPeriodTransactions },
+  { data: cards }
   ] = await Promise.all([currentQuery, lastQuery, cardsQuery])
 
-  if (currentError || lastError) {
-    console.error('Error fetching dashboard stats:', { currentError, lastError })
+  if (currentError) {
+  console.error('Error fetching dashboard stats:', { currentError })
     return {
       totalBalance: 0,
       totalIncome: 0,

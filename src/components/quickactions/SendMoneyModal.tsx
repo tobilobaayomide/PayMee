@@ -20,7 +20,16 @@ import {
 interface SendMoneyModalProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (transaction: any) => void
+  onSuccess?: (transaction: SendMoneyTransaction) => void
+}
+
+export interface SendMoneyTransaction {
+  amount: number
+  recipient_bank: string
+  recipient_account: string
+  reference: string
+  description?: string
+  date: string
 }
 
 export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalProps) {
@@ -28,7 +37,7 @@ export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalPro
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPinModalOpen, setIsPinModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [completedTransaction, setCompletedTransaction] = useState<any>(null)
+  const [completedTransaction, setCompletedTransaction] = useState<SendMoneyTransaction | null>(null)
   const [formData, setFormData] = useState({
     accountNumber: '',
     bankName: '',
@@ -121,14 +130,14 @@ export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalPro
         ? `Transfer to ${formData.bankName} (${formData.accountNumber}): ${formData.description}`
         : `Transfer to ${formData.bankName} (${formData.accountNumber})`
       
-      const transaction: any = {
+      const transaction = {
         user_id: user.id,
-        type: 'expense',
+        type: 'expense' as 'expense',
         amount: amount,
         description: transactionDescription,
         category: 'Transfer',
-        date: new Date().toISOString(),
-        status: 'completed',
+        date: new Date(),
+        status: 'completed' as 'completed',
         reference: `TRF-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: formData.paymentMethod,
         recipient_account: formData.accountNumber,

@@ -41,11 +41,11 @@ export default function TransactionFilters() {
 					<div className="flex items-center gap-2">
 						<div className="relative">
 							<CalendarIcon className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-slate-400 dark:text-slate-500" />
-							<select 
-								value={dateRange}
-								onChange={(e) => setDateRange(e.target.value as any)}
-								className="pl-7 pr-6 py-2 bg-slate-50 dark:bg-neutral-800 border-0 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-neutral-700 transition-all duration-200 appearance-none cursor-pointer"
-							>
+  							<select 
+  								value={dateRange}
+  								onChange={(e) => setDateRange(e.target.value as '7days' | '30days' | '90days' | '1year' | 'all')}
+  								className="pl-7 pr-6 py-2 bg-slate-50 dark:bg-neutral-800 border-0 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-neutral-700 transition-all duration-200 appearance-none cursor-pointer"
+  							>
 								<option value="7days">Last 7 days</option>
 								<option value="30days">Last 30 days</option>
 								<option value="90days">Last 3 months</option>

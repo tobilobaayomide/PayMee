@@ -49,9 +49,13 @@ export function SetPinModal({ isOpen, onClose, onSuccess, cardLast4 }: SetPinMod
 				setIsSubmitting(false)
 				onClose()
 			}, 2000)
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error('Error setting PIN:', error)
-			setError(error?.message || 'Failed to set PIN. Please try again.')
+			if (error && typeof error === 'object' && 'message' in error) {
+				setError((error as { message?: string }).message || 'Failed to set PIN. Please try again.')
+			} else {
+				setError('Failed to set PIN. Please try again.')
+			}
 			setIsSubmitting(false)
 		}
 	}

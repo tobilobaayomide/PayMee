@@ -1,9 +1,13 @@
+import type { SendMoneyTransaction } from './quickactions/SendMoneyModal'
+import type { TopUpTransaction } from './quickactions/TopUpModal'
+import type { InvestmentTransaction } from './quickactions/InvestmentModal'
+import type { ExchangeTransaction } from './quickactions/ExchangeModal'
 'use client'
 
 import { useState } from 'react'
 import { SendMoneyModal } from '@/components/quickactions/SendMoneyModal'
 import { ReceiveMoneyModal } from '@/components/quickactions/ReceiveMoneyModal'
-import { PayBillsModal } from '@/components/quickactions/PayBillsModal'
+import { PayBillsModal, BillPaymentTransaction } from '@/components/quickactions/PayBillsModal'
 import { TopUpModal } from '@/components/quickactions/TopUpModal'
 import { InvestmentModal } from '@/components/quickactions/InvestmentModal'
 import { ExchangeModal } from '@/components/quickactions/ExchangeModal'
@@ -88,7 +92,7 @@ export default function QuickActions({ onTransactionComplete }: { onTransactionC
     }
   }
 
-  const handleSendMoneySuccess = (transaction: any) => {
+  const handleSendMoneySuccess = (transaction: SendMoneyTransaction) => {
     // Refresh dashboard stats
     console.log('Money sent successfully:', transaction)
     if (onTransactionComplete) {
@@ -96,7 +100,7 @@ export default function QuickActions({ onTransactionComplete }: { onTransactionC
     }
   }
 
-  const handlePayBillSuccess = (transaction: any) => {
+  const handlePayBillSuccess = (transaction: BillPaymentTransaction) => {
     // Refresh dashboard stats
     console.log('Bill paid successfully:', transaction)
     if (onTransactionComplete) {
@@ -104,7 +108,7 @@ export default function QuickActions({ onTransactionComplete }: { onTransactionC
     }
   }
 
-  const handleTopUpSuccess = (transaction: any) => {
+  const handleTopUpSuccess = (transaction: TopUpTransaction) => {
     // Refresh dashboard stats
     console.log('Top up successful:', transaction)
     if (onTransactionComplete) {
@@ -112,7 +116,7 @@ export default function QuickActions({ onTransactionComplete }: { onTransactionC
     }
   }
 
-  const handleInvestmentSuccess = (transaction: any) => {
+  const handleInvestmentSuccess = (transaction: InvestmentTransaction) => {
     // Refresh dashboard stats
     console.log('Investment created successfully:', transaction)
     if (onTransactionComplete) {
@@ -120,7 +124,7 @@ export default function QuickActions({ onTransactionComplete }: { onTransactionC
     }
   }
 
-  const handleExchangeSuccess = (transaction: any) => {
+  const handleExchangeSuccess = (transaction: ExchangeTransaction) => {
     // Refresh dashboard stats
     console.log('Exchange completed successfully:', transaction)
     if (onTransactionComplete) {

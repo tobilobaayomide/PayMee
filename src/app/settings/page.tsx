@@ -237,9 +237,13 @@ export default function SettingsPage() {
       if (updated) setProfile(updated)
       
       console.log('✅ Profile saved:', { firstName, lastName, phone, email })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving profile:', error)
-      showMessage('error', error.message || 'Failed to update profile')
+      if (typeof error === 'object' && error && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Failed to update profile')
+      } else {
+        showMessage('error', 'Failed to update profile')
+      }
     } finally {
       setSaving(false)
     }
@@ -263,9 +267,13 @@ export default function SettingsPage() {
       showMessage('success', 'Password updated successfully!')
       setNewPassword('')
       setConfirmPassword('')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error changing password:', error)
-      showMessage('error', error.message || 'Failed to change password')
+      if (typeof error === 'object' && error && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Failed to change password')
+      } else {
+        showMessage('error', 'Failed to change password')
+      }
     } finally {
       setSaving(false)
     }
@@ -281,9 +289,13 @@ export default function SettingsPage() {
         notification_preferences: notifications
       })
       showMessage('success', 'Notification preferences saved!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving notifications:', error)
-      showMessage('error', error.message || 'Failed to save preferences')
+      if (typeof error === 'object' && error && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Failed to save preferences')
+      } else {
+        showMessage('error', 'Failed to save preferences')
+      }
     } finally {
       setSaving(false)
     }
@@ -318,9 +330,13 @@ export default function SettingsPage() {
       await updateCardControls(cardId, cardControls)
 
       showMessage('success', 'Card settings updated successfully!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving card settings:', error)
-      showMessage('error', error.message || 'Failed to save card settings')
+      if (typeof error === 'object' && error && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Failed to save card settings')
+      } else {
+        showMessage('error', 'Failed to save card settings')
+      }
     } finally {
       setSaving(false)
     }
@@ -374,7 +390,7 @@ export default function SettingsPage() {
       
       setVerificationSent(true)
       showMessage('success', 'Verification code sent to your phone!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error sending verification code:', error)
       showMessage('error', 'Failed to send verification code')
     } finally {
@@ -406,9 +422,13 @@ export default function SettingsPage() {
       setVerificationCode('')
       setVerificationSent(false)
       showMessage('success', '2FA enabled successfully!')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error verifying code:', error)
-      showMessage('error', error.message || 'Invalid verification code')
+      if (error && typeof error === 'object' && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Invalid verification code')
+      } else {
+        showMessage('error', 'Invalid verification code')
+      }
     } finally {
       setSaving(false)
     }
@@ -426,7 +446,7 @@ export default function SettingsPage() {
       
       setTwoFactorEnabled(false)
       showMessage('success', '2FA disabled successfully')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error disabling 2FA:', error)
       showMessage('error', 'Failed to disable 2FA')
     } finally {
@@ -480,9 +500,13 @@ export default function SettingsPage() {
       } else {
         throw new Error('Failed to revoke session')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error revoking session:', error)
-      showMessage('error', error.message || 'Failed to revoke session')
+      if (error && typeof error === 'object' && 'message' in error) {
+        showMessage('error', (error as { message?: string }).message || 'Failed to revoke session')
+      } else {
+        showMessage('error', 'Failed to revoke session')
+      }
     } finally {
       setSaving(false)
     }

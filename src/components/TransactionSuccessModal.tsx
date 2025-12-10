@@ -86,7 +86,7 @@ export function TransactionSuccessModal({
                     {formatCurrency(transaction.amount)}
                   </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    has been sent successfully
+                has been sent successfully
                   </p>
                 </div>
 

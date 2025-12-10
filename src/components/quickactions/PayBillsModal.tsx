@@ -20,16 +20,31 @@ import {
   ShieldCheckIcon,
 } from '@heroicons/react/24/outline'
 
+
+export interface BillPaymentTransaction {
+  user_id: string
+  type: 'expense'
+  amount: number
+  description: string
+  category: string
+  date: Date
+  status: 'completed'
+  reference: string
+  payment_method: string
+  recipient_account: string
+  recipient_bank: string
+}
+
 interface PayBillsModalProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (transaction: any) => void
+  onSuccess?: (transaction: BillPaymentTransaction) => void
 }
 
 interface BillCategory {
   id: string
   name: string
-  icon: any
+  icon: React.ComponentType<{ className?: string }>
   color: string
   providers: string[]
   fields: {
@@ -195,8 +210,8 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPinModalOpen, setIsPinModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [completedTransaction, setCompletedTransaction] = useState<any>(null)
-  const [formData, setFormData] = useState<any>({
+  const [completedTransaction, setCompletedTransaction] = useState<BillPaymentTransaction | null>(null)
+  const [formData, setFormData] = useState<Record<string, string>>({
     provider: '',
   })
 
@@ -214,7 +229,7 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData((prev: any) => ({ ...prev, [name]: value }))
+  setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -235,7 +250,7 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
       return
     }
 
-    const amount = parseFloat(formData.amount)
+  const amount = parseFloat(formData.amount || '0')
     if (isNaN(amount) || amount <= 0) {
       alert('Please enter a valid amount')
       return
@@ -255,23 +270,23 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
 
       // Build description based on category
       let accountIdentifier = ''
-      if (formData.phoneNumber) accountIdentifier = formData.phoneNumber
-      else if (formData.meterNumber) accountIdentifier = formData.meterNumber
-      else if (formData.smartCardNumber) accountIdentifier = formData.smartCardNumber
-      else if (formData.accountNumber) accountIdentifier = formData.accountNumber
-      else if (formData.userID) accountIdentifier = formData.userID
+  if (formData.phoneNumber) accountIdentifier = formData.phoneNumber
+  else if (formData.meterNumber) accountIdentifier = formData.meterNumber
+  else if (formData.smartCardNumber) accountIdentifier = formData.smartCardNumber
+  else if (formData.accountNumber) accountIdentifier = formData.accountNumber
+  else if (formData.userID) accountIdentifier = formData.userID
 
       const description = `${selectedCategory.name} - ${formData.provider} (${accountIdentifier})`
 
       // Create transaction
-      const transaction: any = {
+      const transaction = {
         user_id: user.id,
-        type: 'expense',
+        type: 'expense' as 'expense',
         amount: amount,
         description: description,
         category: 'Bills',
-        date: new Date().toISOString(),
-        status: 'completed',
+        date: new Date(),
+        status: 'completed' as 'completed',
         reference: `BILL-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         recipient_account: accountIdentifier,
@@ -447,7 +462,7 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
                         </label>
                         <select
                           name="provider"
-                          value={formData.provider}
+                          value={formData.provider || ''}
                           onChange={handleChange}
                           required
                           className="w-full px-4 py-2.5 border border-slate-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-neutral-800 text-slate-900 dark:text-white"
@@ -521,7 +536,7 @@ export function PayBillsModal({ isOpen, onClose, onSuccess }: PayBillsModalProps
         <TransactionSuccessModal
           isOpen={isSuccessModalOpen}
           onClose={handleSuccessClose}
-          transaction={completedTransaction}
+          transaction={{ ...completedTransaction, date: completedTransaction.date instanceof Date ? completedTransaction.date.toISOString() : completedTransaction.date }}
         />
       )}
     </>

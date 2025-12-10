@@ -22,12 +22,12 @@ export function useTransactions() {
 		}
 
 		setIsLoading(true)
-		try {
-			const data = await fetchTransactions(user.id)
-			setTransactions(data)
-		} catch (err: any) {
-			console.error('Failed to load transactions:', err)
-		} finally {
+  		try {
+  			const data = await fetchTransactions(user.id)
+  			setTransactions(data)
+  		} catch (err: unknown) {
+  			console.error('Failed to load transactions:', err)
+  		} finally {
 			setIsLoading(false)
 		}
 	}, [user])

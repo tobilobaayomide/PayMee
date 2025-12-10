@@ -1,3 +1,4 @@
+import type { Transaction } from '@/types';
 'use client'
 
 import DashboardLayout from '@/components/DashboardLayout'
@@ -63,13 +64,13 @@ function TransactionsContent() {
   const stats = useMemo(() => {
     // Calculate totals from filtered transactions (already respects date range)
     const totalIncome = transactions
-      .filter((t: any) => t.type === 'income')
-      .reduce((sum: number, t: any) => sum + t.amount, 0)
+      .filter((t: Transaction) => t.type === 'income')
+      .reduce((sum: number, t: Transaction) => sum + t.amount, 0)
     const totalExpenses = transactions
-      .filter((t: any) => t.type === 'expense')
-      .reduce((sum: number, t: any) => sum + t.amount, 0)
+      .filter((t: Transaction) => t.type === 'expense')
+      .reduce((sum: number, t: Transaction) => sum + t.amount, 0)
     const pendingCount = transactions
-      .filter((t: any) => t.status === 'pending').length
+      .filter((t: Transaction) => t.status === 'pending').length
     // For comparison, calculate last month from all transactions
     const now = new Date()
     const currentMonth = now.getMonth()
@@ -77,16 +78,16 @@ function TransactionsContent() {
     const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1
     const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear
     // Last month transactions (for comparison) - use allTransactions
-    const lastMonthTransactions = allTransactions.filter((t: any) => {
+    const lastMonthTransactions = allTransactions.filter((t: Transaction) => {
       const txDate = new Date(t.date)
       return txDate.getMonth() === lastMonth && txDate.getFullYear() === lastMonthYear
     })
     const lastMonthIncome = lastMonthTransactions
-      .filter((t: any) => t.type === 'income')
-      .reduce((sum: number, t: any) => sum + t.amount, 0)
+      .filter((t: Transaction) => t.type === 'income')
+      .reduce((sum: number, t: Transaction) => sum + t.amount, 0)
     const lastMonthExpenses = lastMonthTransactions
-      .filter((t: any) => t.type === 'expense')
-      .reduce((sum: number, t: any) => sum + t.amount, 0)
+      .filter((t: Transaction) => t.type === 'expense')
+      .reduce((sum: number, t: Transaction) => sum + t.amount, 0)
     const incomeChange = lastMonthIncome > 0
       ? ((totalIncome - lastMonthIncome) / lastMonthIncome * 100).toFixed(1)
       : '0.0'

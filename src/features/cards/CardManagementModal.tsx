@@ -56,9 +56,13 @@ export function CardManagementModal({ isOpen, onClose, card, onSuccess }: CardMa
 			alert('Card settings saved successfully!')
 			onClose()
 			if (onSuccess) onSuccess()
-		} catch (err: any) {
-			setError(err?.message || 'Failed to save card settings')
-		} finally {
+  		} catch (err: unknown) {
+  			if (err && typeof err === 'object' && 'message' in err) {
+  				setError((err as { message?: string }).message || 'Failed to save card settings')
+  			} else {
+  				setError('Failed to save card settings')
+  			}
+  		} finally {
 			setLoading(false)
 		}
 	}

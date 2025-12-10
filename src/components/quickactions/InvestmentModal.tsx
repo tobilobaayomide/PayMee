@@ -13,7 +13,16 @@ import { formatCurrency } from '@/lib/utils'
 interface InvestmentModalProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (transaction: any) => void
+  onSuccess?: (transaction: InvestmentTransaction) => void
+}
+
+export interface InvestmentTransaction {
+  amount: number
+  recipient_bank: string
+  recipient_account: string
+  reference: string
+  description?: string
+  date: string
 }
 
 type InvestmentType = 'fixed' | 'target'
@@ -65,7 +74,7 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
   const [error, setError] = useState('')
   const [isPinModalOpen, setIsPinModalOpen] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [completedTransaction, setCompletedTransaction] = useState<any>(null)
+  const [completedTransaction, setCompletedTransaction] = useState<InvestmentTransaction | null>(null)
 
   const handleClose = () => {
     setStep('select')
@@ -164,14 +173,14 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
       }
 
       // Create investment transaction (deduct from balance)
-      const transaction: any = {
+      const transaction = {
         user_id: user.id,
         amount: numAmount,
-        type: 'expense',
+        type: 'expense' as 'expense',
         category: 'Investment',
         description,
-        date: new Date().toISOString(),
-        status: 'completed',
+        date: new Date(),
+        status: 'completed' as 'completed',
         reference: `INV-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
         payment_method: 'wallet',
         metadata: {
@@ -221,9 +230,13 @@ export function InvestmentModal({ isOpen, onClose, onSuccess }: InvestmentModalP
           onSuccess(result)
         }
       }, 100)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Investment error:', err)
-      setError(err.message || 'Failed to create investment. Please try again.')
+      if (err && typeof err === 'object' && 'message' in err) {
+        setError((err as { message?: string }).message || 'Failed to create investment. Please try again.')
+      } else {
+        setError('Failed to create investment. Please try again.')
+      }
       setIsPinModalOpen(false)
       setStep('details')
     } finally {

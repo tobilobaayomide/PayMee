@@ -59,9 +59,13 @@ export function SetTransactionPinModal({ isOpen, onClose, onSuccess, canClose = 
         setIsSubmitting(false)
         onClose()
       }, 2000)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error setting transaction PIN:', error)
-      setError(error?.message || 'Failed to set transaction PIN. Please try again.')
+      if (typeof error === 'object' && error && 'message' in error) {
+        setError((error as { message?: string }).message || 'Failed to set transaction PIN. Please try again.')
+      } else {
+        setError('Failed to set transaction PIN. Please try again.')
+      }
       setIsSubmitting(false)
     }
   }
@@ -94,7 +98,7 @@ export function SetTransactionPinModal({ isOpen, onClose, onSuccess, canClose = 
             Transaction PIN Set Successfully!
           </h3>
           <p className="text-slate-600 dark:text-slate-400">
-            Your 4-digit transaction PIN has been created. You'll need to enter this PIN to authorize all transactions.
+            Your 4-digit transaction PIN has been created. You&apos;ll need to enter this PIN to authorize all transactions.
           </p>
         </div>
       </div>
@@ -131,7 +135,7 @@ export function SetTransactionPinModal({ isOpen, onClose, onSuccess, canClose = 
             🔒 Why do I need a Transaction PIN?
           </p>
           <p className="text-sm text-blue-800 dark:text-blue-200">
-            Your 4-digit transaction PIN adds an extra layer of security to all your transactions. You'll need to enter this PIN whenever you send money, pay bills, or make withdrawals.
+            Your 4-digit transaction PIN adds an extra layer of security to all your transactions. You&apos;ll need to enter this PIN whenever you send money, pay bills, or make withdrawals.
           </p>
         </div>
 
@@ -182,8 +186,8 @@ export function SetTransactionPinModal({ isOpen, onClose, onSuccess, canClose = 
              <span className="font-medium">Security Tips:</span>
             </p>
             <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
-              <li>✓ Don't use obvious numbers (1234, 0000, etc.)</li>
-              <li>✓ Don't use your birthday or phone number</li>
+              <li>✓ Don&apos;t use obvious numbers (1234, 0000, etc.)</li>
+              <li>✓ Don&apos;t use your birthday or phone number</li>
               <li>✓ Never share your PIN with anyone</li>
               <li>✓ Change your PIN regularly</li>
             </ul>
