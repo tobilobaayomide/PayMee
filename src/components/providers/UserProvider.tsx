@@ -29,11 +29,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const getUser = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser()
-        console.log('UserProvider - getUser result:', { user: !!user, email: user?.email, error })
         setUser(user)
         setLoading(false)
       } catch (err) {
-        console.error('UserProvider - getUser error:', err)
         setLoading(false)
       }
     }
@@ -42,7 +40,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('UserProvider - auth state change:', { event, hasSession: !!session, hasUser: !!session?.user })
         setUser(session?.user ?? null)
         setLoading(false)
       }
