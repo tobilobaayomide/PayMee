@@ -47,7 +47,7 @@ export default function Login() {
       } else if (data.session) {
         // Create session record in database
         await createSession(data.user.id, data.session.access_token)
-        window.location.href = '/'
+        window.location.href = '/dashboard'
       }
     } catch {
       setError('An unexpected error occurred')

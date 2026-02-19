@@ -84,3 +84,7 @@ h1, h2, h3, h4, h5, h6, .font-header {
   background: #1e293b;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
+
+html {
+  scroll-behavior: smooth;
+}
