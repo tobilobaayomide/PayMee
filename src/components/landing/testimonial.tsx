@@ -30,7 +30,7 @@ const testimonials = [
 
 export default function Testimonial() {
   return (
-    <section className="relative w-full flex flex-col items-center justify-center px-0 py-20 bg-gray-100">
+    <section className="relative w-full flex flex-col items-center justify-center px-0 py-20 bg-gray-100 md:scroll-mt-22 scroll-mt-0" id="testimonials">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
