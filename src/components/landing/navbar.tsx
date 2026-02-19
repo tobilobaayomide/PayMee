@@ -6,14 +6,13 @@ import { useState } from 'react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseOutline } from "react-icons/io5";
 
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="w-full flex items-center justify-between px-6 md:px-60 py-6 md:py-6 bg-blue-100 fixed top-0 left-0 z-50">
+    <nav className="w-full flex items-center justify-between px-6 md:px-40 py-6 md:py-6 bg-blue-100 fixed top-0 left-0 z-50">
       {/* Logo and PayMee */}
-           <div className="flex items-center">
+      <div className="flex items-center">
         <Link href="/" scroll={true} className="flex items-center">
           <Image
             src="/favicon.ico"
@@ -28,28 +27,27 @@ export default function Navbar() {
 
       {/* Desktop Navigation Links */}
       <div className="hidden md:flex gap-8 text-[16px] font-bold">
-        <Link href="#features" className="text-blue-800 hover:text-blue-500 transition">Features</Link>
-        <Link href="#services" className="text-blue-800 hover:text-blue-500 transition">Services</Link>
-        <Link href="#testimonials" className="text-blue-800 hover:text-blue-500 transition">Testimonials</Link>
-        <Link href="#faq" className="text-blue-800 hover:text-blue-500 transition">FAQ</Link>
+        <Link href="/#features" className="text-blue-800 hover:text-blue-500 transition">Features</Link>
+        <Link href="/#services" className="text-blue-800 hover:text-blue-500 transition">Services</Link>
+        <Link href="/#testimonials" className="text-blue-800 hover:text-blue-500 transition">Testimonials</Link>
+        <Link href="/#faq" className="text-blue-800 hover:text-blue-500 transition">FAQ</Link>
       </div>
 
-      {/* Desktop Auth Button */}
+      {/* Desktop Auth Buttons */}
       <div className="hidden md:flex gap-4">
+        <Link href="/login" className=" text-blue-800  text-[16px] px-7 py-3 font-bold underline hover:opacity-80 transition">Login</Link>
         <Link href="/signup" className="bg-blue-800 text-white text-[16px] px-7 py-3 rounded-3xl hover:bg-blue-700 transition">Sign Up</Link>
       </div>
 
-      {/* Hamburger Menu for Mobile */}
+      {/* Hamburger Menu for Mobile */} 
       <button
         className="md:hidden flex items-center justify-center p-2 rounded focus:outline-none"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label={menuOpen ? "Close menu" : "Open menu"}
       >
         {menuOpen ? (
-          // Close (X) icon
           <IoCloseOutline size={25} color="#1e3a8a" />
         ) : (
-          // Hamburger icon
           <RxHamburgerMenu size={25} color="#1e3a8a" />
         )}
       </button>
@@ -62,10 +60,17 @@ export default function Navbar() {
             : 'opacity-0 pointer-events-none -translate-y-8'
         }`}
       >
-        <Link href="#features" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Features</Link>
-        <Link href="#services" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Services</Link>
-        <Link href="#testimonials" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Testimonials</Link>
-        <Link href="#faq" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>FAQ</Link>
+        <Link href="/#features" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Features</Link>
+        <Link href="/#services" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Services</Link>
+        <Link href="/#testimonials" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>Testimonials</Link>
+        <Link href="/#faq" className="text-blue-800 hover:text-blue-500 transition" onClick={() => setMenuOpen(false)}>FAQ</Link>
+        <Link
+          href="/login"
+          className="bg-white text-blue-800 border border-blue-800 text-[16px] px-4 py-2 rounded-3xl hover:bg-blue-50 transition w-fit self-start -ml-4"
+          onClick={() => setMenuOpen(false)}
+        >
+          Login
+        </Link>
         <Link
           href="/signup"
           className="bg-blue-800 text-white text-[16px] px-4 py-2 rounded-3xl hover:bg-blue-700 transition w-fit self-start -ml-4"
