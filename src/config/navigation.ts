@@ -10,7 +10,7 @@ import { NavigationItem } from '@/types'
 export const mainNavigation: NavigationItem[] = [
   { 
     name: 'Overview', 
-    href: '/', 
+    href: '/dashboard', 
     icon: HomeIcon,
     description: 'Dashboard overview and account summary'
   },
