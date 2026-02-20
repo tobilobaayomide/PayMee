@@ -27,11 +27,9 @@ export default function Home() {
   useEffect(() => {
     async function checkUserStatus() {
       if (!user?.id) {
-        console.log('⏳ No user ID available yet')
         return
       }
       
-      console.log('🔍 Checking user status for:', user.id)
       
       try {
         const profile = await fetchUserProfile(user.id)

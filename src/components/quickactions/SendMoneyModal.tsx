@@ -48,12 +48,6 @@ export function SendMoneyModal({ isOpen, onClose, onSuccess }: SendMoneyModalPro
 
   // Debug state changes
   useEffect(() => {
-    console.log('State updated:', {
-      isSuccessModalOpen,
-      completedTransaction,
-      isPinModalOpen,
-      isSubmitting
-    })
   }, [isSuccessModalOpen, completedTransaction, isPinModalOpen, isSubmitting])
 
   const nigerianBanks = [
