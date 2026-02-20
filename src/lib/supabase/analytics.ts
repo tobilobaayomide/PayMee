@@ -132,16 +132,13 @@ export async function getMonthlyTrend(
   const { data: transactions, error } = await query
 
   if (error) {
-    console.error('Error fetching transactions for monthly trend:', error)
     return []
   }
 
   if (!transactions || transactions.length === 0) {
-    console.log('No transactions found for user:', userId)
     return []
   }
 
-  console.log(`Found ${transactions.length} transactions for monthly trend`)
 
   // Group by month and year, and find min/max month
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -197,7 +194,6 @@ export async function getMonthlyTrend(
     if (m > 11) { m = 0; y++; }
   }
   
-  console.log('Monthly trend data:', result)
   
   // Only show last 12 months if more
   return result.slice(-12)
